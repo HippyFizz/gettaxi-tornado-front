@@ -6,6 +6,9 @@ import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
+import { UserManagmentComponent } from './user-managment/user-managment.component';
+import { RidesManagmentComponent } from './rides-managment/rides-managment.component';
+import { CompaniesManagmentComponent } from './companies-managment/companies-managment.component';
 
 const appRoutes: Routes = [
   {
@@ -28,6 +31,9 @@ const appRoutes: Routes = [
     AppComponent,
     LoginComponent,
     HomeComponent,
+    UserManagmentComponent,
+    RidesManagmentComponent,
+    CompaniesManagmentComponent,
   ],
   imports: [
     BrowserModule,
