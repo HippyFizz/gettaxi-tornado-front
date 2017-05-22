@@ -65,10 +65,8 @@ export class AppComponent implements OnInit {
   token: string;
 
   ngOnInit() {
-    try {
-      this.token = localStorage.getItem('auth_token');
-    } catch (e) {
-      this.token = '';
-    }
+    this.token = localStorage.getItem('auth_token');
+    if (!this.token) throw 'no token found';
+    console.log(this.token);
   }
 }

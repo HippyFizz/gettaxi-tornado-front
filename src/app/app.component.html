@@ -1,4 +1,7 @@
 <h1>{{title}}</h1>
 <h2>Авторизация!</h2>
-<app-login></app-login>
+<div *ngIf="!token">
+  <app-login></app-login>
+</div>
+
 

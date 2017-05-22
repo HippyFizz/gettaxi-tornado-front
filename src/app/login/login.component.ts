@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {Http, Response} from '@angular/http';
 import {LoginService} from '../services/login.service';
 
+import {AppComponent} from '../app.component';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
