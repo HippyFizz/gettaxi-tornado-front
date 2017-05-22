@@ -1,0 +1,24 @@
+<button (click)="logOut()">Log Out</button>
+<div *ngIf="user && user.role == 11">
+  <p>Привет, {{ user.credentials }}</p>
+  <p>11</p>
+</div>
+<div *ngIf="user && user.role == 22">
+  <p>Привет, {{ user.credentials }}</p>
+  <p>22</p>
+</div>
+
+<div *ngIf="user && user.role == 33">
+  <p>Привет, {{ user.credentials }}</p>
+  <p>33</p>
+</div>
+<div *ngIf="user && user.role == 44">
+  <p>Привет, {{ user.credentials }}</p>
+  <p>44</p>
+</div>
+<div *ngIf="user && user.role == 77">
+  <p>Привет, {{ user.credentials }}</p>
+  <p>77</p>
+</div>
+
+

@@ -1,13 +1,10 @@
 export class User {
-  id: number;
   status: number;
   username: string;
   role: string;
   credentials: string;
-  token: string;
 
-  constructor(id, status, username, role, credentials) {
-    this.id = id;
+  constructor(status, username, role, credentials) {
     this.status = status;
     this.username = username;
     this.role = role;
