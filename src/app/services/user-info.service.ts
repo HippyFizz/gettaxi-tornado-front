@@ -3,24 +3,14 @@ import {Http, Response, Headers} from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {Observable} from 'rxjs/Observable';
-import {Settings} from '../configuration/options';
+import {environment} from '../../environments/environment';
+import {HttpClient} from '../classes/http-client';
 
 @Injectable()
 export class UserInfoService {
-
-  constructor(private http: Http) {
-  }
-
   getUserData(): Observable<object> {
-    const settings = new Settings();
-    const headers = new Headers();
-    headers.append('Access-Control-Allow-Origin', '*');
-    headers.append('Authorization', localStorage.getItem('auth_token'));
     return this.http.get(
-      settings.url + '/api/v1/users/',
-      {
-        headers: headers
-      }
+      environment.url + '/api/v1/users/'
     ).map(this.extractData
     ).catch(this.handleError);
 
@@ -42,5 +32,8 @@ export class UserInfoService {
     }
     console.error(errMsg);
     return Observable.throw(errMsg);
+  }
+
+  constructor(private http: HttpClient) {
   }
 }
