@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Http, Response, Headers} from '@angular/http';
+import {Response} from '@angular/http';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {Observable} from 'rxjs/Observable';
@@ -10,7 +10,7 @@ import {HttpClient} from '../classes/http-client';
 export class UserInfoService {
   getUserData(): Observable<object> {
     return this.http.get(
-      environment.url + '/api/v1/users/'
+      environment.url + '/api/v1/users/current'
     ).map(this.extractData
     ).catch(this.handleError);
 

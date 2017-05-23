@@ -1,0 +1,32 @@
+<p>
+  user-managment works!
+</p>
+<div *ngIf="detailed">
+  <h3>You are editing: {{detailed.username}}</h3>
+  <p>status: <input [(ngModel)]="detailed.status" value="{{detailed.status}}"></p>
+  <p>role: <input [(ngModel)]="detailed.role" value="{{detailed.role}}"></p>
+  <p>credentials: <input [(ngModel)]="detailed.credentials" value="{{detailed.credentials}}"></p>
+  <button (click)="saveDetails(detailed)">Save</button>
+</div>
+
+<div *ngIf="users && users.length > 0">
+  <table>
+    <thead>
+    <th>actions</th>
+    <th>status</th>
+    <th>username</th>
+    <th>role</th>
+    <th>credentials</th>
+    </thead>
+    <tbody>
+    <tr *ngFor="let user of users">
+      <button (click)="showDetails(user)">Edit</button>
+      <td>{{user.status}}</td>
+      <td>{{user.username}}</td>
+      <td>{{user.role}}</td>
+      <td>{{user.credentials}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+

@@ -1,31 +1,22 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
-import {HttpModule, JsonpModule, RequestOptions, XHRBackend} from '@angular/http';
-import {RouterModule, Routes} from '@angular/router';
+import {Http, HttpModule, JsonpModule, RequestOptions, XHRBackend} from '@angular/http';
+import {RouterModule} from '@angular/router';
+import {appRoutes} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {LoginComponent} from './login/login.component';
 import {HomeComponent} from './home/home.component';
 import {UserManagmentComponent} from './user-managment/user-managment.component';
 import {RidesManagmentComponent} from './rides-managment/rides-managment.component';
 import {CompaniesManagmentComponent} from './companies-managment/companies-managment.component';
-import { HttpClient } from './classes/http-client';
+import {HttpClient} from './classes/http-client';
+import {WebSocketService} from './services/serve-socket.service';
+import {StreamService} from './services/stream.service';
 
-const appRoutes: Routes = [
-  {
-    path: 'login',
-    component: LoginComponent,
-    data: {title: 'Heroes List'}
-  },
-  {
-    path: 'home',
-    component: HomeComponent
-  },
-  {
-    path: '',
-    component: AppComponent
-  }
-];
+export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions) {
+  return new HttpClient(backend, defaultOptions);
+}
 
 @NgModule({
   declarations: [
@@ -46,11 +37,11 @@ const appRoutes: Routes = [
   providers: [
     {
       provide: HttpClient,
-      useFactory: (backend: XHRBackend, options: RequestOptions) => {
-        return new HttpClient(backend, options);
-      },
+      useFactory: httpFactory,
       deps: [XHRBackend, RequestOptions]
-    }
+    },
+    WebSocketService,
+    StreamService
   ],
   bootstrap: [AppComponent]
 })
