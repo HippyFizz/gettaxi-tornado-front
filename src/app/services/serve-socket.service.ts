@@ -11,10 +11,7 @@ export class WebSocketService {
   private subject: Subject<MessageEvent>;
 
   public connect(url): Subject<MessageEvent> {
-    if (!this.subject) {
-      this.subject = this.create(url);
-    }
-
+    this.subject = this.create(url);
     return this.subject;
   }
 

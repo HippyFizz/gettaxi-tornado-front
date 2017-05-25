@@ -10,7 +10,7 @@ import {environment} from '../../environments/environment';
 @Injectable()
 export class LoginService {
   loginUser(log, pass): Observable<string> {
-    const data = JSON.stringify({
+    let data = JSON.stringify({
       'username': log,
       'password': pass,
     });
@@ -22,7 +22,7 @@ export class LoginService {
   }
 
   private extractData(res: Response) {
-    const token = res.headers.get('Authorization');
+    let token = res.headers.get('Authorization');
     return token || {};
   }
 
@@ -30,8 +30,8 @@ export class LoginService {
     // In a real world app, you might use a remote logging infrastructure
     let errMsg: string;
     if (error instanceof Response) {
-      const body = error.json() || '';
-      const err = body.error || JSON.stringify(body);
+      let body = error.json() || '';
+      let err = body.error || JSON.stringify(body);
       errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
     } else {
       errMsg = error.message ? error.message : error.toString();

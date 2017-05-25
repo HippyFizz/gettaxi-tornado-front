@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy} from '@angular/core';
 import {Http, Response} from '@angular/http';
 import {LoginService} from '../services/login.service';
 import {Router} from '@angular/router';
 import {AppComponent} from '../app.component';
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +11,8 @@ import {AppComponent} from '../app.component';
   styleUrls: ['./login.component.css'],
   providers: [LoginService],
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnDestroy {
+  private subscription: Subscription;
   username: string;
   password: string;
 
@@ -18,7 +20,7 @@ export class LoginComponent implements OnInit {
   }
 
   login(): void {
-    this.loginService.loginUser(this.username, this.password).subscribe(user_token => {
+    this.subscription = this.loginService.loginUser(this.username, this.password).subscribe(user_token => {
       if (user_token) {
         localStorage.setItem('auth_token', user_token);
         this.router.navigate(['home']);
@@ -26,7 +28,8 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
 }

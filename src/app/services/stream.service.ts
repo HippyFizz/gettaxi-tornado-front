@@ -15,20 +15,19 @@ export interface Message {
 export class StreamService {
   public messages: Subject<Message>;
 
-  constructor(wsService: WebSocketService) {
-    this.messages = <Subject<Message>>wsService.connect(environment.tornado_socket + '/users/websocket')
+  constructor(public wsService: WebSocketService) {
+  }
+
+  joinSocket() {
+    this.messages = <Subject<Message>>this.wsService.connect(environment.tornado_socket + '/users/websocket')
       .map((response: MessageEvent): Message => {
         let data = JSON.parse(response.data);
         return {
           timestamp: Date.now(),
-          token: localStorage.getItem('auth_token'),
-          event: 'new data from server',
+          token: data.token,
+          event: data.event,
           data: data.message
         };
       })
-      .retryWhen((errors) => {
-        console.log(errors);
-        return errors.delay(200);
-      });
   }
 }

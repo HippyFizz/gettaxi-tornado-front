@@ -1,6 +1,4 @@
-<p>
-  user-managment works!
-</p>
+<hr>
 <div *ngIf="detailed">
   <h3>You are editing: {{detailed.username}}</h3>
   <button (click)="show_hidePasswordChange()">Change password</button>
@@ -28,7 +26,20 @@
   </div>
 </div>
 
-<div *ngIf="users && users.length > 0 && !detailed">
+<div *ngIf="creatingNew">
+  <p style="color: red" *ngIf="username_exist">username already exists</p>
+  <p>login: <input [(ngModel)]="new_user.username" (ngModelChange)="checkIfUsernameExist(new_user.username)"></p>
+  <p style="display: inline-block;">password: <input [attr.type]="showNewPassword ? 'text' : 'password'" [(ngModel)]="new_password"></p>
+  <button (mousedown)="showEnteredPassword()" (mouseup)="hideEnteredPassword()" (mouseleave)="hideEnteredPassword()">show</button>
+  <p>status: <input [(ngModel)]="new_user.status"></p>
+  <p>role <select [(ngModel)]="new_role">
+            <option *ngFor="let status of statuses" value="{{status.id}}">{{status.name}}</option>
+          </select></p>
+  <p>credentials: <input [(ngModel)]="new_user.credentials"></p>
+</div>
+
+<div *ngIf="users && users.length > 0 && !detailed && !creatingNew">
+  <button (click)="startCreatingNewUser()">Create new user</button>
   <table>
     <thead>
     <th>actions</th>
