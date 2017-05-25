@@ -11,12 +11,36 @@ import { User } from '../classes/user';
 export class HomeComponent implements OnInit {
   user: User;
 
+  users = false;
+  rides = false;
+  companies = false;
+
+  showUserManagment() {
+    this.users = true;
+    this.rides = false;
+    this.companies = false;
+  }
+
+  showRidesManagment() {
+    this.users = false;
+    this.rides = true;
+    this.companies = false;
+  }
+
+  showCompaniesManagment() {
+    this.users = false;
+    this.rides = false;
+    this.companies = true;
+  }
+
   constructor(private getUserDataService: UserInfoService, private router: Router) {
   }
 
   getUserData(): void {
     this.getUserDataService.getUserData().subscribe(data => {
       this.user = new User(data['status'], data['username'], data['role'], data['credentials']);
+      if (!this.user.status)
+        this.router.navigate(['/login'])
     });
   }
 

@@ -14,9 +14,49 @@ import {StreamService} from '../services/stream.service';
 export class UserManagmentComponent implements OnInit, OnDestroy {
   users: User[] = Array();
   detailed: User = null;
+  detailed_before_changes: User = null;
+  statuses = [
+       {id: 11, name: "root_admin"},
+       {id: 22, name: "admin_gett"},
+       {id: 33, name: "manager_gett"},
+       {id: 44, name: "dispatcher"},
+       {id: 77, name: "super_user"},
+     ];
+  new_role = null;
+  new_password = null;
+  showPasswordChange = false;
+  showNewPassword = false;
+
+  test() {
+    console.log(this.new_password)
+  }
+
+  checkIfUserModified() {
+    if (this.detailed.role != this.detailed_before_changes.role
+      || this.detailed.status != this.detailed_before_changes.status
+      || this.detailed.credentials != this.detailed_before_changes.credentials
+      || this.new_password) {
+      return true;
+    } else
+      return false;
+  }
+
+  showEnteredPassword() {
+      this.showNewPassword = true;
+  }
+
+  hideEnteredPassword() {
+      this.showNewPassword = false;
+  }
+
+  show_hidePasswordChange() {
+    this.showPasswordChange = !this.showPasswordChange;
+  }
 
   showDetails(user) {
     this.detailed = user;
+    this.detailed_before_changes = user;
+    this.new_role = user.role
   };
 
   saveDetails(user): void {
@@ -24,12 +64,35 @@ export class UserManagmentComponent implements OnInit, OnDestroy {
       timestamp: Date.now(),
       token: localStorage.getItem('auth_token'),
       event: 'edit user',
-      data: JSON.stringify(user)
+      data: {changed_user: user, password: this.new_password}
     };
     console.log(message);
+    for (let i = 0; i < this.users.length; i ++){
+      if (this.users[i].username == user.username) {
+        this.users.slice(i, i);
+        break;
+      }
+    }
     this.socket.messages.next(message);
-    this.detailed = null;
+    this.setDefault();
   };
+
+  activateUser(user) {
+    this.detailed.status = 1;
+  }
+
+  deactivateUser(user) {
+    this.detailed.status = 0;
+  }
+
+  setDefault() {
+    this.detailed = null;
+    this.detailed_before_changes = null;
+    this.new_role = null;
+    this.new_password = null;
+    this.showPasswordChange = false;
+    this.showNewPassword = false;
+  }
 
   constructor(private socket: StreamService) {
     socket.messages.subscribe(msg => {

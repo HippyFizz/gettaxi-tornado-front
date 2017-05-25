@@ -21,13 +21,12 @@ export class WebSocketService {
   private create(url): Subject<MessageEvent> {
     const ws = new ReconnectingWebSocket(url);
     const observable = Observable.create((obs: Observer<MessageEvent>) => {
-      ws.onopen = evt => {
-        console.log(evt);
-        ws.send(JSON.stringify({token: localStorage.getItem('auth_token')}));
-      };
       ws.onmessage = obs.next.bind(obs);
       ws.onerror = obs.error.bind(obs);
       ws.onclose = obs.complete.bind(obs);
+      ws.onopen = evt => {
+        ws.send(JSON.stringify({token: localStorage.getItem('auth_token'), event: 'connected'}));
+      };
 
       return ws.close.bind(ws);
     }).share();

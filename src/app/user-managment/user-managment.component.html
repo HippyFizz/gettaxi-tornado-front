@@ -3,13 +3,32 @@
 </p>
 <div *ngIf="detailed">
   <h3>You are editing: {{detailed.username}}</h3>
-  <p>status: <input [(ngModel)]="detailed.status" value="{{detailed.status}}"></p>
-  <p>role: <input [(ngModel)]="detailed.role" value="{{detailed.role}}"></p>
-  <p>credentials: <input [(ngModel)]="detailed.credentials" value="{{detailed.credentials}}"></p>
+  <button (click)="show_hidePasswordChange()">Change password</button>
   <button (click)="saveDetails(detailed)">Save</button>
+  <button (click)="detailed = null">Back</button>
+  <div>
+    <p style="display: inline-block;">status:</p>
+    <p style="display: inline-block;" *ngIf="detailed.status">Active</p>
+    <p style="display: inline-block;" *ngIf="!detailed.status">Deactive</p>
+    <button *ngIf="detailed.status" (click)="deactivateUser(detailed)">Deactivate</button>
+    <button *ngIf="!detailed.status" (click)="activateUser(detailed)">Activate</button>
+  </div>
+  <div>
+    <p style="display: inline-block;">role:</p>
+    <select [(ngModel)]="new_role">
+      <option *ngFor="let status of statuses"  [selected]="status.id === detailed.role" value="{{status.id}}">{{status.name}}</option>
+    </select>
+
+  </div>
+  <p>credentials: <input [(ngModel)]="detailed.credentials" value="{{detailed.credentials}}"></p>
+  <div *ngIf="showPasswordChange">
+    <p style="display: inline-block;">Set new password for login '{{detailed.username}}'</p>
+    <input [attr.type]="showNewPassword ? 'text' : 'password'" [(ngModel)]="new_password">
+    <button (mousedown)="showEnteredPassword()" (mouseup)="hideEnteredPassword()" (mouseleave)="hideEnteredPassword()">show</button>
+  </div>
 </div>
 
-<div *ngIf="users && users.length > 0">
+<div *ngIf="users && users.length > 0 && !detailed">
   <table>
     <thead>
     <th>actions</th>

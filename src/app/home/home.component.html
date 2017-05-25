@@ -1,25 +1,32 @@
-<button (click)="logOut()">Log Out</button>
 <div *ngIf="user && user.role == 11">
   <p>Привет, {{ user.credentials }}</p>
+  <button (click)="logOut()">Log Out</button>
   <app-user-managment></app-user-managment>
 </div>
 <div *ngIf="user && user.role == 22">
   <p>Привет, {{ user.credentials }}</p>
+  <button (click)="logOut()">Log Out</button>
   <app-user-managment></app-user-managment>
 </div>
 <div *ngIf="user && user.role == 33">
   <p>Привет, {{ user.credentials }}</p>
+  <button (click)="logOut()">Log Out</button>
   <app-companies-managment></app-companies-managment>
 </div>
 <div *ngIf="user && user.role == 44">
   <p>Привет, {{ user.credentials }}</p>
+  <button (click)="logOut()">Log Out</button>
   <app-rides-managment></app-rides-managment>
 </div>
 <div *ngIf="user && user.role == 77">
   <p>Привет, {{ user.credentials }}</p>
-  <app-user-managment></app-user-managment>
-  <app-rides-managment></app-rides-managment>
-  <app-companies-managment></app-companies-managment>
+  <button (click)="showUserManagment()">User</button>
+  <button (click)="showRidesManagment()">Rides</button>
+  <button (click)="showCompaniesManagment()">Companies</button>
+  <button (click)="logOut()">Log Out</button>
+  <app-user-managment *ngIf="users"></app-user-managment>
+  <app-rides-managment *ngIf="rides"></app-rides-managment>
+  <app-companies-managment *ngIf="companies"></app-companies-managment>
 </div>
 
 
