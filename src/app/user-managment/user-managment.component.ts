@@ -4,7 +4,7 @@ import {Subscription} from 'rxjs/Subscription';
 import {environment} from '../../environments/environment';
 import {StreamService} from '../services/stream.service';
 import {Router} from '@angular/router';
-
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-user-managment',
@@ -13,6 +13,27 @@ import {Router} from '@angular/router';
   providers: [StreamService]
 })
 export class UserManagmentComponent implements OnInit, OnDestroy {
+  name = new FormControl();
+
+  editUserForm = new FormGroup ({
+    password: new FormControl(),
+    status: new FormControl(),
+    username: new FormControl(),
+    role: new FormControl(),
+    credentials: new FormControl()
+  });
+
+  createUserForm = new FormGroup({
+    password: new FormControl(),
+    status: new FormControl(),
+    username: new FormControl(),
+    role: new FormControl(),
+    credentials: new FormControl()
+  })
+
+
+
+
   private subscription: Subscription;
   users: User[] = Array();
   detailed: User = null;
@@ -83,6 +104,18 @@ export class UserManagmentComponent implements OnInit, OnDestroy {
     this.setDefault();
   };
 
+  createUser(user): void {
+    let message = {
+      timestamp: Date.now(),
+      token: localStorage.getItem('auth_token'),
+      event: 'user create',
+      data: {created_user: user, password: this.new_password}
+    };
+
+    this.socket.messages.next(message);
+    this.setDefault();
+  }
+
   activateUser(user) {
     this.detailed.status = 1;
   }
@@ -108,14 +141,35 @@ export class UserManagmentComponent implements OnInit, OnDestroy {
   setDefault() {
     this.detailed = null;
     this.detailed_before_changes = null;
+    this.creatingNew = false;
+    this.new_user = new User(true, '', '', '');
     this.new_role = null;
     this.new_password = null;
     this.showPasswordChange = false;
     this.showNewPassword = false;
+
   }
 
-  constructor(private socket: StreamService, private router: Router) {
+  constructor(private socket: StreamService, private router: Router, private fb: FormBuilder) {
+    this.createForms();
+  }
 
+  createForms() {
+    this.editUserForm = this.fb.group({
+      password: ['', [Validators.minLength(4), Validators.maxLength(24)]],
+      status: ['', Validators.required],
+      username: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(24)]],
+      role: ['', Validators.required],
+      credentials: ['', Validators.required]
+    });
+
+    this.createUserForm = this.fb.group({
+      password: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(24)]],
+      status: ['', Validators.required],
+      username: ['', [Validators.required, Validators.minLength(4), Validators.maxLength(24)]],
+      role: ['', Validators.required],
+      credentials: ['', Validators.required]
+    });
   }
 
   ngOnInit() {

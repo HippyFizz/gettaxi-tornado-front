@@ -1,46 +1,123 @@
-<hr>
-<div *ngIf="detailed">
+<div style="margin-top: 70px;">
+  <form [formGroup]="editUserForm" *ngIf="detailed">
   <h3>You are editing: {{detailed.username}}</h3>
-  <button (click)="show_hidePasswordChange()">Change password</button>
-  <button (click)="saveDetails(detailed)">Save</button>
-  <button (click)="detailed = null">Back</button>
-  <div>
-    <p style="display: inline-block;">status:</p>
-    <p style="display: inline-block;" *ngIf="detailed.status">Active</p>
-    <p style="display: inline-block;" *ngIf="!detailed.status">Deactive</p>
-    <button *ngIf="detailed.status" (click)="deactivateUser(detailed)">Deactivate</button>
-    <button *ngIf="!detailed.status" (click)="activateUser(detailed)">Activate</button>
+  <div class="form-group">
+      <label class="center-block">Status:
+        <select class="form-control" formControlName="status" [(ngModel)]="detailed.status">
+          <option [value]="true">Active</option>
+          <option [value]="false">Disabled</option>
+        </select>
+      </label>
+    </div>
+  <div class="form-group">
+      <label class="center-block">Role:
+        <select class="form-control" formControlName="role" [(ngModel)]="detailed.role">
+           <option *ngFor="let status of statuses" value="{{status.id}}">{{status.name}}</option>
+        </select>
+        <div *ngIf="editUserForm.get('role').errors && (editUserForm.get('role').dirty || editUserForm.get('role').touched)" class="alert alert-danger">
+          <div [hidden]="!editUserForm.get('role').errors.required">
+            Role is required.
+          </div>
+        </div>
+      </label>
+    </div>
+  <div class="form-group">
+      <label class="center-block">Credentials:
+        <input class="form-control" formControlName="credentials" [(ngModel)]="detailed.credentials">
+      </label>
   </div>
-  <div>
-    <p style="display: inline-block;">role:</p>
-    <select [(ngModel)]="new_role">
-      <option *ngFor="let status of statuses"  [selected]="status.id === detailed.role" value="{{status.id}}">{{status.name}}</option>
-    </select>
+  <div class="form-group" *ngIf="showPasswordChange">
+    <label class="center-block">Set new password for login '{{detailed.username}}:</label>
+    <div class="input-group">
+        <input class="form-control" formControlName="password" [attr.type]="showNewPassword ? 'text' : 'password'" [(ngModel)]="new_password">
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button" (mousedown)="showEnteredPassword()" (mouseup)="hideEnteredPassword()" (mouseleave)="hideEnteredPassword()">show</button>
+        </span>
+    </div>
+    <div *ngIf="editUserForm.get('password').errors && (editUserForm.get('password').dirty || editUserForm.get('password').touched)" class="alert alert-danger">
+        <div [hidden]="!editUserForm.get('password').errors.minlength">
+            Password must be at least 4 characters long.
+        </div>
+        <div [hidden]="!editUserForm.get('password').errors.maxlength">
+            Password cannot be more than 24 characters long.
+        </div>
+    </div>
+  </div>
+  <button class="btn btn-default" (click)="show_hidePasswordChange()">Change password</button>
+  <button class="btn btn-default" [disabled]="editUserForm.get('password').errors || editUserForm.get('status').errors || editUserForm.get('credentials').errors || editUserForm.get('role').errors || (editUserForm.get('password').pristine && editUserForm.get('status').pristine && editUserForm.get('credentials').pristine && editUserForm.get('role').pristine)" (click)="saveDetails(detailed)">Save</button>
+  <button class="btn btn-default" (click)="setDefault()">Back</button>
+</form>
 
-  </div>
-  <p>credentials: <input [(ngModel)]="detailed.credentials" value="{{detailed.credentials}}"></p>
-  <div *ngIf="showPasswordChange">
-    <p style="display: inline-block;">Set new password for login '{{detailed.username}}'</p>
-    <input [attr.type]="showNewPassword ? 'text' : 'password'" [(ngModel)]="new_password">
-    <button (mousedown)="showEnteredPassword()" (mouseup)="hideEnteredPassword()" (mouseleave)="hideEnteredPassword()">show</button>
-  </div>
-</div>
-
-<div *ngIf="creatingNew">
-  <p style="color: red" *ngIf="username_exist">username already exists</p>
-  <p>login: <input [(ngModel)]="new_user.username" (ngModelChange)="checkIfUsernameExist(new_user.username)"></p>
-  <p style="display: inline-block;">password: <input [attr.type]="showNewPassword ? 'text' : 'password'" [(ngModel)]="new_password"></p>
-  <button (mousedown)="showEnteredPassword()" (mouseup)="hideEnteredPassword()" (mouseleave)="hideEnteredPassword()">show</button>
-  <p>status: <input [(ngModel)]="new_user.status"></p>
-  <p>role <select [(ngModel)]="new_role">
-            <option *ngFor="let status of statuses" value="{{status.id}}">{{status.name}}</option>
-          </select></p>
-  <p>credentials: <input [(ngModel)]="new_user.credentials"></p>
-</div>
+  <form  [formGroup]="createUserForm" novalidate *ngIf="creatingNew">
+    <div class="form-group">
+      <label class="center-block">Username:
+        <input name="name" class="form-control" formControlName="username" [(ngModel)]="new_user.username" (ngModelChange)="checkIfUsernameExist(new_user.username)">
+      </label>
+      <div *ngIf="createUserForm.get('username').errors && (createUserForm.get('username').dirty || createUserForm.get('username').touched)" class="alert alert-danger">
+          <div [hidden]="!createUserForm.get('username').errors.required">
+            Username is required.
+          </div>
+          <div [hidden]="!createUserForm.get('username').errors.minlength">
+            Username must be at least 4 characters long.
+          </div>
+          <div [hidden]="!createUserForm.get('username').errors.maxlength">
+            Username cannot be more than 24 characters long.
+          </div>
+        </div>
+      <div class="alert alert-danger" [hidden]="!username_exist">
+        Such username already exists.
+      </div>
+    </div>
+    <label class="center-block">Password:</label>
+      <div class="input-group">
+        <input class="form-control" formControlName="password" [attr.type]="showNewPassword ? 'text' : 'password'" [(ngModel)]="new_password">
+        <span class="input-group-btn">
+          <button class="btn btn-default" type="button" (mousedown)="showEnteredPassword()" (mouseup)="hideEnteredPassword()" (mouseleave)="hideEnteredPassword()">show</button>
+        </span>
+      </div>
+      <div *ngIf="createUserForm.get('password').errors && (createUserForm.get('password').dirty || createUserForm.get('password').touched)" class="alert alert-danger">
+          <div [hidden]="!createUserForm.get('password').errors.required">
+            Password is required.
+          </div>
+          <div [hidden]="!createUserForm.get('password').errors.minlength">
+            Password must be at least 4 characters long.
+          </div>
+          <div [hidden]="!createUserForm.get('password').errors.maxlength">
+            Password cannot be more than 24 characters long.
+          </div>
+        </div>
+    <div class="form-group">
+      <label class="center-block">Status:
+        <select class="form-control" formControlName="status" [(ngModel)]="new_user.status">
+          <option [value]="true">Active</option>
+          <option [value]="false">Disabled</option>
+        </select>
+      </label>
+    </div>
+    <div class="form-group">
+      <label class="center-block">Role:
+        <select class="form-control" formControlName="role" [(ngModel)]="new_user.role">
+           <option *ngFor="let status of statuses" value="{{status.id}}">{{status.name}}</option>
+        </select>
+        <div *ngIf="createUserForm.get('role').errors && (createUserForm.get('role').dirty || createUserForm.get('role').touched)" class="alert alert-danger">
+          <div [hidden]="!createUserForm.get('role').errors.required">
+            Role is required.
+          </div>
+        </div>
+      </label>
+    </div>
+    <div class="form-group">
+      <label class="center-block">Credentials:
+        <input class="form-control" formControlName="credentials" [(ngModel)]="new_user.credentials">
+      </label>
+    </div>
+    <button class="btn btn-default" [disabled]="createUserForm.get('username').errors || createUserForm.get('password').errors || createUserForm.get('status').errors || createUserForm.get('credentials').errors || createUserForm.get('role').errors || username_exist" (click)="createUser(new_user)">Create</button>
+    <button class="btn btn-default" (click)="setDefault()">Back</button>
+  </form>
 
 <div *ngIf="users && users.length > 0 && !detailed && !creatingNew">
-  <button (click)="startCreatingNewUser()">Create new user</button>
-  <table>
+  <button class="btn btn-default" (click)="startCreatingNewUser()">Create new user</button>
+  <table class="table table-striped">
     <thead>
     <th>actions</th>
     <th>status</th>
@@ -50,7 +127,7 @@
     </thead>
     <tbody>
     <tr *ngFor="let user of users">
-      <button (click)="showDetails(user)">Edit</button>
+      <button class="btn btn-default" (click)="showDetails(user)">Edit</button>
       <td>{{user.status}}</td>
       <td>{{user.username}}</td>
       <td>{{user.role}}</td>
@@ -59,4 +136,4 @@
     </tbody>
   </table>
 </div>
-
+</div>

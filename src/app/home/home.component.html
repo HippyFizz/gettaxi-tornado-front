@@ -19,11 +19,18 @@
   <app-rides-managment></app-rides-managment>
 </div>
 <div *ngIf="user && user.role == 77">
-  <p>Привет, {{ user.credentials }}</p>
-  <button (click)="showUserManagment()">User</button>
-  <button (click)="showRidesManagment()">Rides</button>
-  <button (click)="showCompaniesManagment()">Companies</button>
-  <button (click)="logOut()">Log Out</button>
+  <nav class="navbar navbar-default navbar-fixed-top">
+  <div class="container-fluid">
+  <div class="navbar-header">
+  <a href="#" class="navbar-brand" style="margin-top: 0px !important;">Gett manage system</a>
+  </div>
+  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-3">
+  <button class="btn btn-default navbar-btn" (click)="showUserManagment()">User</button>
+  <button class="btn btn-default navbar-btn" (click)="showRidesManagment()">Rides</button>
+  <button class="btn btn-default navbar-btn" (click)="showCompaniesManagment()">Companies</button>
+  <button class="btn btn-default navbar-btn" (click)="logOut()">Log Out</button>
+  </div> </div>
+  </nav>
   <app-user-managment *ngIf="users"></app-user-managment>
   <app-rides-managment *ngIf="rides"></app-rides-managment>
   <app-companies-managment *ngIf="companies"></app-companies-managment>

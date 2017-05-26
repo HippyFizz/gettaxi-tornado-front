@@ -7,10 +7,6 @@ import {Headers} from '@angular/http'
 export class HttpClient extends Http {
   constructor(backend: ConnectionBackend, defaultOptions: RequestOptions) {
     defaultOptions.headers.append('Access-Control-Allow-Origin', '*');
-    let token = localStorage.getItem('auth_token');
-    if (token) {
-      defaultOptions.headers.append('Authorization', token);
-    }
     super(backend, defaultOptions);
   }
 
