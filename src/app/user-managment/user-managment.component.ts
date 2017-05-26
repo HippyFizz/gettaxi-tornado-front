@@ -155,6 +155,12 @@ export class UserManagmentComponent implements OnInit, OnDestroy {
             }
           }
         }
+      }, () => {
+        this.subscription.unsubscribe();
+        this.ngOnInit();
+      }, () => {
+        this.subscription.unsubscribe();
+        this.ngOnInit();
       }
     );
   }

@@ -1,7 +1,5 @@
 import {Subject, Observable, Subscription, Observer} from 'rxjs/Rx';
 import {WebSocketSubject} from 'rxjs/observable/dom/WebSocketSubject';
-import { ReconnectingWebSocket } from 'ng2-reconnecting-websocket/reconnecting-websocket';
-
 import {environment} from '../../environments/environment';
 import {Injectable} from '@angular/core';
 
@@ -16,8 +14,8 @@ export class WebSocketService {
   }
 
   private create(url): Subject<MessageEvent> {
-    const ws = new ReconnectingWebSocket(url);
-    const observable = Observable.create((obs: Observer<MessageEvent>) => {
+    let ws = new WebSocket(url);
+    let observable = Observable.create((obs: Observer<MessageEvent>) => {
       ws.onmessage = obs.next.bind(obs);
       ws.onerror = obs.error.bind(obs);
       ws.onclose = obs.complete.bind(obs);
@@ -28,7 +26,7 @@ export class WebSocketService {
       return ws.close.bind(ws);
     }).share();
 
-    const observer = {
+    let observer = {
       next: (data: Object) => {
         if (ws.readyState === WebSocket.OPEN) {
           ws.send(JSON.stringify(data));
