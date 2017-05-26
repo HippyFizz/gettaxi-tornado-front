@@ -1,5 +1,5 @@
 <div style="margin-top: 70px;">
-  <form [formGroup]="editUserForm" *ngIf="detailed">
+  <form [formGroup]="editUserForm" novalidate *ngIf="detailed">
   <h3>You are editing: {{detailed.username}}</h3>
   <div class="form-group">
       <label class="center-block">Status:

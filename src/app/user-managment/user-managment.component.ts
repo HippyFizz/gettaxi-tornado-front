@@ -13,8 +13,6 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
   providers: [UserStreamService]
 })
 export class UserManagmentComponent implements OnInit, OnDestroy {
-  name = new FormControl();
-
   editUserForm = new FormGroup ({
     password: new FormControl(),
     status: new FormControl(),

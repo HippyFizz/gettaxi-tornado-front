@@ -44,6 +44,9 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.user = new User(data['status'], data['username'], data['role'], data['credentials']);
       if (!this.user.status)
         this.router.navigate(['/login'])
+    }, error => {
+      this.subscription.unsubscribe()
+      this.getUserData();
     });
   }
 
