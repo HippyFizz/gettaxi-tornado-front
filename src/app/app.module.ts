@@ -12,7 +12,6 @@ import {RidesManagmentComponent} from './rides-managment/rides-managment.compone
 import {CompaniesManagmentComponent} from './companies-managment/companies-managment.component';
 import {HttpClient} from './classes/http-client';
 import {WebSocketService} from './services/serve-socket.service';
-import {StreamService} from './services/stream.service';
 import { ReactiveFormsModule } from '@angular/forms';
 
 export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions) {
@@ -42,8 +41,7 @@ export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions)
       useFactory: httpFactory,
       deps: [XHRBackend, RequestOptions]
     },
-    WebSocketService,
-    StreamService
+    WebSocketService
   ],
   bootstrap: [AppComponent]
 })

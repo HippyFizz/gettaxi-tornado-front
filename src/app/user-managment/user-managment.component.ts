@@ -2,7 +2,7 @@ import {Component, OnInit, OnDestroy} from '@angular/core';
 import {User} from '../classes/user';
 import {Subscription} from 'rxjs/Subscription';
 import {environment} from '../../environments/environment';
-import {StreamService} from '../services/stream.service';
+import {UserStreamService} from '../services/user-stream.service';
 import {Router} from '@angular/router';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
@@ -10,7 +10,7 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
   selector: 'app-user-managment',
   templateUrl: './user-managment.component.html',
   styleUrls: ['./user-managment.component.css'],
-  providers: [StreamService]
+  providers: [UserStreamService]
 })
 export class UserManagmentComponent implements OnInit, OnDestroy {
   name = new FormControl();
@@ -150,7 +150,7 @@ export class UserManagmentComponent implements OnInit, OnDestroy {
 
   }
 
-  constructor(private socket: StreamService, private router: Router, private fb: FormBuilder) {
+  constructor(private socket: UserStreamService, private router: Router, private fb: FormBuilder) {
     this.createForms();
   }
 

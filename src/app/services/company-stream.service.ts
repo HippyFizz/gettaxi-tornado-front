@@ -12,14 +12,15 @@ export interface Message {
 }
 
 @Injectable()
-export class StreamService {
+export class CompanyStreamService {
+
   public messages: Subject<Message>;
 
   constructor(public wsService: WebSocketService) {
   }
 
   joinSocket() {
-    this.messages = <Subject<Message>>this.wsService.connect(environment.tornado_socket + '/users/websocket')
+    this.messages = <Subject<Message>>this.wsService.connect(environment.tornado_socket + '/companies/websocket')
       .map((response: MessageEvent): Message => {
         let data = JSON.parse(response.data);
         return {
@@ -30,4 +31,5 @@ export class StreamService {
         };
       })
   }
+
 }
