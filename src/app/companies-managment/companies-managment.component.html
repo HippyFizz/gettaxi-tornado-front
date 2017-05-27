@@ -1,5 +1,39 @@
+<div class="parent" *ngIf="!gotDataFromSocket && !no_companies_to_approve">
+    <span class="spinner center-block"></span>
+</div>
+
 <div style="margin-top: 70px;">
-  <p>
-    companies-managment works!
-  </p>
+  <div *ngIf="no_companies_to_approve">
+    <div class="alert alert-warning" role="alert">
+      Nothing to approve.
+    </div>
+  </div>
+  <div *ngIf="checkingCompany">
+    <div class="list-group-item" *ngFor="let key of checkingCompanyKeys">
+      <h4 class="list-group-item-heading">{{key}}</h4>
+      <p class="list-group-item-text">{{checkingCompany[key]}}</p>
+    </div>
+    <div>
+      <button class="btn btn-success" (click)="confirmCompany(checkingCompany)" style="width: 100%;">Approve</button>
+      <button class="btn btn-primary" (click)="setDefault()" style="width: 100%;">Back</button>
+    </div>
+  </div>
+  <div *ngIf="companies && companies.length > 0 && !checkingCompany">
+  <table class="table table-striped">
+    <thead>
+    <th>actions</th>
+    <th>form</th>
+    <th>name</th>
+    <th>create date</th>
+    </thead>
+    <tbody>
+    <tr *ngFor="let company of companies">
+      <button class="btn btn-default" (click)="showCompany(company)">More</button>
+      <td>{{company.form}}</td>
+      <td>{{company.name}}</td>
+      <td>{{company.created_at}}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
 </div>

@@ -19,6 +19,8 @@ export class LoginComponent implements OnDestroy {
 
   failLogin = '';
 
+  loginInProgress = false;
+
   LoginUserForm = new FormGroup ({
     username: new FormControl(),
     password: new FormControl(),
@@ -36,12 +38,15 @@ export class LoginComponent implements OnDestroy {
   }
 
   login(): void {
+    this.loginInProgress = true;
     this.subscription = this.loginService.loginUser(this.username, this.password).subscribe(user_token => {
+      this.loginInProgress = false;
       if (user_token) {
         localStorage.setItem('auth_token', user_token);
         this.router.navigate(['home']);
       }
     }, error => {
+      this.loginInProgress = false;
       let error_message = JSON.parse(error);
       switch (error_message.status_code) {
         case 403:
@@ -61,7 +66,6 @@ export class LoginComponent implements OnDestroy {
           this.failLogin = 'Server is under maintenance. \nPlease, try login later.'
           break;
       }
-      console.log(error_message);
     });
   }
 

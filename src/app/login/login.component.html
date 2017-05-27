@@ -1,5 +1,5 @@
-<div class="container">
-  <div class="login-container">
+<div class="parent container">
+  <div class="login-container center-block" >
             <div id="output"></div>
             <div class="avatar"></div>
             <div class="form-box">
@@ -33,9 +33,9 @@
                         {{ failLogin }}
                       </div>
                     </div>
-                    <button [disabled]="LoginUserForm.get('username').errors || LoginUserForm.get('password').errors" class="btn btn-info btn-block login" (click)="login(login, password)">Login</button>
+                    <button [disabled]="LoginUserForm.get('username').errors || LoginUserForm.get('password').errors || loginInProgress" class="btn btn-info btn-block login" (click)="login(login, password)">Login</button>
                 </form>
             </div>
         </div>
-
+      <span class="spinner center-block" *ngIf="loginInProgress"></span>
 </div>
