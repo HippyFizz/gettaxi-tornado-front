@@ -1,3 +1,6 @@
+<div class="parent" *ngIf="!user">
+    <span class="spinner"></span>
+</div>
 <div *ngIf="user && user.role == 11">
   <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container-fluid">

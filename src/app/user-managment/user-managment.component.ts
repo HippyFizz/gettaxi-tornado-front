@@ -30,7 +30,7 @@ export class UserManagmentComponent implements OnInit, OnDestroy {
   })
 
 
-
+  gotDataFromSocket = false;
 
   private subscription: Subscription;
   users: User[] = Array();
@@ -182,6 +182,7 @@ export class UserManagmentComponent implements OnInit, OnDestroy {
             localStorage.setItem('auth_token', msg.token)
             this.username_exist = msg.data.username;
         } else if (msg.event === 'new users') {
+           this.gotDataFromSocket = true;
            if (msg.data.length > 0) {
             for (let i = 0; i < msg.data.length; i++) {
               let exist = false;
@@ -208,9 +209,11 @@ export class UserManagmentComponent implements OnInit, OnDestroy {
           }
         }
       }, () => {
+        this.gotDataFromSocket = false;
         this.subscription.unsubscribe();
         this.ngOnInit();
       }, () => {
+        this.gotDataFromSocket = false;
         this.subscription.unsubscribe();
         this.ngOnInit();
       }

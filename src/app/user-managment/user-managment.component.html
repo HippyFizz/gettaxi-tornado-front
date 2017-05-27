@@ -1,3 +1,6 @@
+<div class="parent" *ngIf="!gotDataFromSocket">
+    <span class="spinner"></span>
+</div>
 <div style="margin-top: 70px;">
   <form [formGroup]="editUserForm" novalidate *ngIf="detailed">
   <h3>You are editing: {{detailed.username}}</h3>
