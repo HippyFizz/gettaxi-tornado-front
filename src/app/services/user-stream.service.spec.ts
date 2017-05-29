@@ -1,15 +1,15 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { StreamService } from './stream.service';
+import { UserStreamService } from './user-stream.service';
 
-describe('StreamService', () => {
+describe('UserStreamService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [StreamService]
+      providers: [UserStreamService]
     });
   });
 
-  it('should be created', inject([StreamService], (service: StreamService) => {
+  it('should be created', inject([UserStreamService], (service: UserStreamService) => {
     expect(service).toBeTruthy();
   }));
 });
