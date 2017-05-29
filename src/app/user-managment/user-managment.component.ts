@@ -52,10 +52,6 @@ export class UserManagmentComponent implements OnInit, OnDestroy {
   creatingNew = false;
   new_user: User = new User(true, '', '', '')
 
-  test() {
-    console.log(this.new_password)
-  }
-
   checkIfUserModified() {
     if (this.detailed.role != this.detailed_before_changes.role
       || this.detailed.status != this.detailed_before_changes.status
@@ -173,7 +169,6 @@ export class UserManagmentComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.socket.joinSocket();
     this.subscription = this.socket.messages.subscribe(msg => {
-        console.log(msg);
         if (msg.event === 'token expired') {
            localStorage.removeItem('auth_token');
            this.router.navigate(['/login']);

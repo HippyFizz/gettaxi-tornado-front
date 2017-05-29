@@ -133,7 +133,11 @@
       <button class="btn btn-default" (click)="showDetails(user)">Edit</button>
       <td>{{user.status}}</td>
       <td>{{user.username}}</td>
-      <td>{{user.role}}</td>
+      <td *ngIf="user.role == 11">Root admin</td>
+      <td *ngIf="user.role == 22">Gett Admin</td>
+      <td *ngIf="user.role == 33">Gett Manager</td>
+      <td *ngIf="user.role == 44">Dispatcher</td>
+      <td *ngIf="user.role == 77">Super user</td>
       <td>{{user.credentials}}</td>
     </tr>
     </tbody>
