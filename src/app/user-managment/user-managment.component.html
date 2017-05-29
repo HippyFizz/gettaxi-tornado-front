@@ -129,7 +129,29 @@
     <th>credentials</th>
     </thead>
     <tbody>
-    <tr *ngFor="let user of users">
+    <tr>
+      <td>
+        <button class="btn btn-default" (click)="clearFilter()">Clear</button>
+      </td>
+      <td>
+        <select class="form-control" [(ngModel)]="searchCriteria.status">
+          <option [ngValue]="true">Active</option>
+          <option [ngValue]="false">Disabled</option>
+        </select>
+      </td>
+      <td>
+        <input class="form-control" [(ngModel)]="searchCriteria.username">
+      </td>
+      <td>
+        <select class="form-control" [(ngModel)]="searchCriteria.role">
+          <option *ngFor="let status of statuses" value="{{status.id}}">{{status.name}}</option>
+        </select>
+      </td>
+      <td>
+        <input class="form-control" [(ngModel)]="searchCriteria.credentials">
+      </td>
+    </tr>
+    <tr *ngFor="let user of (users | users_filter:searchCriteria.status:searchCriteria.username:searchCriteria.role:searchCriteria.credentials)">
       <button class="btn btn-default" (click)="showDetails(user)">Edit</button>
       <td>{{user.status}}</td>
       <td>{{user.username}}</td>

@@ -75,7 +75,6 @@ export class CompaniesManagmentComponent implements OnInit, OnDestroy {
               this.companies.push(msg.data[i]);
             }
          }
-         console.log(this.companies);
        } else if (msg.data && msg.data.length == 0) {
          this.no_companies_to_approve = true;
        }

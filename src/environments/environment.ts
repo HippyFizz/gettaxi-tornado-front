@@ -5,7 +5,7 @@
 
 export const environment = {
   production: false,
-  server_url: 'http://127.0.0.1',
+  server_url: 'http://163.172.136.57',
   server_port: '27022',
   url: 'http://163.172.136.57:27022',
   tornado_socket: 'ws://163.172.136.57:27022'

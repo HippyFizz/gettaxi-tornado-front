@@ -5,6 +5,7 @@ import {environment} from '../../environments/environment';
 import {UserStreamService} from '../services/user-stream.service';
 import {Router} from '@angular/router';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import {UsersPipe} from '../pipes/users.pipe'
 
 @Component({
   selector: 'app-user-managment',
@@ -29,6 +30,10 @@ export class UserManagmentComponent implements OnInit, OnDestroy {
     credentials: new FormControl()
   })
 
+  searchCriteria: User = new User(true, '', '', '');
+
+  positive: Boolean = true;
+  negative: Boolean = false;
 
   gotDataFromSocket = false;
 
@@ -52,14 +57,8 @@ export class UserManagmentComponent implements OnInit, OnDestroy {
   creatingNew = false;
   new_user: User = new User(true, '', '', '')
 
-  checkIfUserModified() {
-    if (this.detailed.role != this.detailed_before_changes.role
-      || this.detailed.status != this.detailed_before_changes.status
-      || this.detailed.credentials != this.detailed_before_changes.credentials
-      || this.new_password) {
-      return true;
-    } else
-      return false;
+  clearFilter() {
+    this.searchCriteria = new User(true, '', '', '');
   }
 
   showEnteredPassword() {

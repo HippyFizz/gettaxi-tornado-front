@@ -12,7 +12,10 @@ import {RidesManagmentComponent} from './rides-managment/rides-managment.compone
 import {CompaniesManagmentComponent} from './companies-managment/companies-managment.component';
 import {HttpClient} from './classes/http-client';
 import {WebSocketService} from './services/serve-socket.service';
-import { ReactiveFormsModule } from '@angular/forms';
+import {ReactiveFormsModule} from '@angular/forms';
+import { UsersPipe } from './pipes/users.pipe';
+import { CompaniesPipe } from './pipes/companies.pipe';
+import { RidesPipe } from './pipes/rides.pipe';
 
 export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions) {
   return new HttpClient(backend, defaultOptions);
@@ -26,6 +29,9 @@ export function httpFactory(backend: XHRBackend, defaultOptions: RequestOptions)
     UserManagmentComponent,
     RidesManagmentComponent,
     CompaniesManagmentComponent,
+    UsersPipe,
+    CompaniesPipe,
+    RidesPipe,
   ],
   imports: [
     BrowserModule,
